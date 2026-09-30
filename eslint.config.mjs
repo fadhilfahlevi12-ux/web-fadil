@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skrip pemeriksa lokal (diabaikan git): CommonJS + `require()`.
+    "tmp/**",
   ]),
 ]);
 
