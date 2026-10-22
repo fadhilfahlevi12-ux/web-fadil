@@ -1,9 +1,10 @@
 import "dotenv/config";
-import { count, eq } from "drizzle-orm";
+import { count, eq, isNotNull } from "drizzle-orm";
 
 import { db } from "../db";
 import {
   archiveDocuments,
+  campusMembers,
   letterRequests,
   seminarSchedules,
   thesisSubmissions,
@@ -46,10 +47,23 @@ async function main() {
     await db.select({ value: count() }).from(archiveDocuments)
   )[0];
 
+  const { value: memberTotal } = (
+    await db.select({ value: count() }).from(campusMembers)
+  )[0];
+  const { value: memberClaimed } = (
+    await db
+      .select({ value: count() })
+      .from(campusMembers)
+      .where(isNotNull(campusMembers.claimedAt))
+  )[0];
+
   console.log(`\nletter_requests      : ${letterTotal} baris`);
   console.log(`thesis_submissions   : ${thesisTotal} baris`);
   console.log(`seminar_schedules    : ${seminarTotal} baris`);
   console.log(`archive_documents    : ${archiveTotal} baris`);
+  console.log(
+    `campus_members       : ${memberTotal} baris (${memberClaimed} sudah dipakai membuat akun)`
+  );
 
   const [pendingStaff] = await db
     .select({ value: count() })

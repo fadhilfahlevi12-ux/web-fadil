@@ -12,6 +12,8 @@
     "db:push": "drizzle-kit push",
     "db:check": "tsx scripts/db-check.ts",
     "db:seed": "tsx scripts/seed.ts",
+    "db:import": "tsx scripts/import-members.ts",
+    "db:import:dry": "tsx scripts/import-members.ts --dry-run",
     "pdf:check": "tsx scripts/pdf-check.ts",
     "laporan:check": "tsx scripts/laporan-check.ts",
     "pelengkap:check": "tsx --conditions=react-server scripts/pelengkap-check.ts"

@@ -36,12 +36,12 @@ export default async function AdminUsersPage({
     <div className="space-y-6">
       <PageHeader
         title="Manajemen Pengguna"
-        description="Buat akun Dosen dan Kaprodi. Akun admin dibuat pengembang melalui seed script; akun mahasiswa dibuat melalui pendaftaran mandiri."
+        description="Buat akun Dosen dan Kaprodi. Cukup isi email, password, role, dan NIDN yang sudah terdaftar di menu Data Akademik — nama akun diambil otomatis dari data tersebut. Akun admin dibuat pengembang melalui seed script; akun mahasiswa dibuat melalui pendaftaran mandiri."
       />
 
       <SectionCard
         title="Buat Akun Dosen / Kaprodi"
-        description="Akun ini tidak dapat didaftarkan oleh publik."
+        description="Akun ini tidak dapat didaftarkan oleh publik. NIDN divalidasi terhadap Data Akademik dan nama akun mengikuti data tersebut."
       >
         <CreateUserForm />
       </SectionCard>

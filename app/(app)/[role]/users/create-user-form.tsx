@@ -15,16 +15,6 @@ export function CreateUserForm() {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label
-            htmlFor="name"
-            className="mb-1 block text-sm font-medium text-slate-700"
-          >
-            Nama Lengkap
-          </label>
-          <input id="name" name="name" required className={inputClass} />
-        </div>
-
-        <div>
-          <label
             htmlFor="email"
             className="mb-1 block text-sm font-medium text-slate-700"
           >
@@ -74,14 +64,21 @@ export function CreateUserForm() {
             htmlFor="nidn"
             className="mb-1 block text-sm font-medium text-slate-700"
           >
-            NIDN
+            NIDN <span className="text-red-500">*</span>
           </label>
           <input
             id="nidn"
             name="nidn"
+            required
+            minLength={4}
+            maxLength={30}
             placeholder="Contoh: 0912345678"
             className={inputClass}
           />
+          <p className="mt-1 text-xs text-slate-500">
+            NIDN harus sudah diimpor di menu Data Akademik. Nama akun diambil
+            otomatis dari data tersebut.
+          </p>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
@@ -33,6 +34,48 @@ export const users = pgTable('users', {
     .notNull()
     .$onUpdate(() => new Date()),
 })
+
+// ---------- Data Akademik (acuan validasi pendaftaran akun) ----------
+
+export const memberTypeEnum = pgEnum('member_type', ['mahasiswa', 'dosen'])
+
+/**
+ * Daftar resmi orang yang boleh memiliki akun di SIMAP.
+ * Admin mengimpor NAMA/NIM (mahasiswa) dan NAMA/NIDN (dosen); pendaftaran
+ * maupun pembuatan akun staf hanya diterima bila cocok dengan data ini.
+ */
+export const campusMembers = pgTable(
+  'campus_members',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    memberType: memberTypeEnum('member_type').notNull(),
+    name: varchar('name', { length: 255 }).notNull(),
+    // NIM untuk mahasiswa, NIDN untuk dosen
+    identifier: varchar('identifier', { length: 30 }).notNull(),
+    // Diisi saat data dipakai untuk membuat akun (sekali pakai).
+    claimedAt: timestamp('claimed_at', { withTimezone: true }),
+    claimedByUserId: uuid('claimed_by_user_id').references(() => users.id, {
+      onDelete: 'set null',
+    }),
+    createdById: uuid('created_by_id').references(() => users.id, {
+      onDelete: 'set null',
+    }),
+    createdAt: timestamp('created_at', { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .notNull()
+      .$onUpdate(() => new Date()),
+  },
+  (table) => [
+    uniqueIndex('campus_members_type_identifier_idx').on(
+      table.memberType,
+      table.identifier
+    ),
+    index('campus_members_name_idx').on(table.name),
+  ]
+)
 
 // ---------- Modul Layanan Surat Mahasiswa (E-Service) ----------
 
@@ -213,6 +256,10 @@ export type Role = (typeof userRoleEnum.enumValues)[number]
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert
 
+export type MemberType = (typeof memberTypeEnum.enumValues)[number]
+export type CampusMember = typeof campusMembers.$inferSelect
+export type NewCampusMember = typeof campusMembers.$inferInsert
+
 export type LetterType = (typeof letterTypeEnum.enumValues)[number]
 export type LetterStatus = (typeof letterStatusEnum.enumValues)[number]
 export type LetterRequest = typeof letterRequests.$inferSelect
@@ -262,4 +309,15 @@ export const ARCHIVE_CATEGORY_LABELS: Record<ArchiveCategory, string> = {
   sk_mengajar: 'SK Mengajar Dosen',
   akreditasi: 'Sertifikat Akreditasi',
   mou: 'MoU / Kerja Sama',
+}
+
+export const MEMBER_TYPE_LABELS: Record<MemberType, string> = {
+  mahasiswa: 'Mahasiswa',
+  dosen: 'Dosen',
+}
+
+/** Label kolom identitas: NIM untuk mahasiswa, NIDN untuk dosen. */
+export const MEMBER_IDENTIFIER_LABELS: Record<MemberType, string> = {
+  mahasiswa: 'NIM',
+  dosen: 'NIDN',
 }

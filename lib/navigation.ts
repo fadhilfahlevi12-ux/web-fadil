@@ -140,6 +140,13 @@ export const ROLE_NAV: Record<Role, RoleNavGroup[]> = {
           description: "Kelola dokumen resmi untuk kebutuhan akreditasi.",
         },
         {
+          label: "Data Akademik",
+          href: "/admin/data-akademik",
+          icon: "graduation",
+          description:
+            "Impor NAMA/NIM mahasiswa & NAMA/NIDN dosen sebagai acuan pendaftaran.",
+        },
+        {
           label: "Manajemen Pengguna",
           href: "/admin/users",
           icon: "users",

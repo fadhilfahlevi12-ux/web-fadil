@@ -44,3 +44,6 @@ next-env.d.ts
 # artefak pengembangan lokal (log skrip/dev server & keluaran pemeriksa)
 /tmp/
 *.log
+
+# data pribadi untuk impor data akademik (NIM/NIDN asli) — jangan di-commit
+/data/*.txt

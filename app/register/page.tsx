@@ -20,18 +20,33 @@ export default function RegisterPage() {
           Daftar Akun Mahasiswa
         </h1>
         <p className="mb-6 text-sm text-slate-500">
-          Buat akun mahasiswa SIMAP TI UMPAR
+          Buat akun mahasiswa SIMAP TI UMPAR. Cukup masukkan NIM, email, dan
+          password — nama akun diambil otomatis dari data akademik prodi.
         </p>
 
         <form action={formAction} className="space-y-4">
           <div>
             <label
-              htmlFor="name"
+              htmlFor="nim"
               className="mb-1 block text-sm font-medium text-slate-700"
             >
-              Nama Lengkap
+              NIM
             </label>
-            <input id="name" name="name" required className={inputClass} />
+            <input
+              id="nim"
+              name="nim"
+              required
+              minLength={4}
+              maxLength={30}
+              autoComplete="username"
+              autoFocus
+              placeholder="Contoh: 2201010001"
+              className={inputClass}
+            />
+            <p className="mt-1 text-xs text-slate-500">
+              Nama akun mengikuti data akademik prodi. Bila NIM belum terdaftar,
+              hubungi staf administrasi.
+            </p>
           </div>
 
           <div>
@@ -65,21 +80,6 @@ export default function RegisterPage() {
               required
               minLength={6}
               autoComplete="new-password"
-              className={inputClass}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="nim"
-              className="mb-1 block text-sm font-medium text-slate-700"
-            >
-              NIM
-            </label>
-            <input
-              id="nim"
-              name="nim"
-              placeholder="Contoh: 2201010001"
               className={inputClass}
             />
           </div>
